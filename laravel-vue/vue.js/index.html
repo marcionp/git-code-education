@@ -3,31 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style type="text/css">
+        .pago{
+            color: green;
+        }
+        .em-aberto{
+            color: red;
+        }
+
+        .verde{
+            color: green;
+        }
+
+        .vermelho{
+            color: red;
+        }
+
+        .cinza{
+            color: gray;
+        }
+
+        .minha-classe{
+            background-color: burlywood;
+        }
+    </style>
 </head>
 <body id="app">
-    <h1>{{title}}</h1>
-    <span> <strong>{{ status }}</strong> </span>
-    <table border="1px" cellpadding="10px">
-       <thead>
+    <h1>{{ title }}</h1>
+
+    <nav>
+        <ul>
+            <li v-for="obj in menus">
+                <a href="#" @click.prevent="showView(obj.id)">{{ obj.name }}</a>
+            </li>
+
+        </ul>
+    </nav>
+    <div v-if="activedView == 0">
+        <div>
+            <h2>Sumário de Contas</h2>
+
+            <h3 v-bind:class="{ 'cinza' : countPendingBill < 0, 'verde' : countPendingBill == 0, 'vermelho' : countPendingBill > 0 }" >
+                {{ countPendingBill | reportStatus }}
+            </h3>
+            <br>
+        </div>
+
+        <table border="1px" cellpadding="10px">
+            <thead>
             <tr>
                 <th>Vencimento</th>
                 <th>Nome</th>
                 <th>Valor</th>
                 <th>Paga?</th>
+                <th colspan="3">Ações</th>
             </tr>
-       </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr v-for="obj in bills">
                 <td> {{ obj.date_due }}</td>
                 <td> {{ obj.name }} </td>
-                <td> {{ obj.value }}</td>
-                <td> {{ obj.status2}} </td>
+                <td> {{ obj.value | currency 'R$ ' 2 }}</td>
+                <!-- <td v-bind:class="{'pago' : obj.done, 'emAberto' : !obj.done }"> -->
+                <td class="minha-classe" v-bind:class="{'pago' : obj.done, 'em-aberto' : !obj.done }">
+                    {{ obj.done | doneLabel}}
+                </td>
+                <td>
+                    <a href="#" @click.prevent="loadBill(obj)">Editar</a>
+                </td>
+                <td>
+                    <a href="#" @click.prevent="killBill(obj)">Excluir</a>
+                </td>
+                <td v-if="!obj.done">
+                    <a href="#" @click.prevent="writeOffBill(obj)">Informar Pagamento</a>
+                </td>
+                <td v-else="!obj.done">
+                    -
+                </td>
+
+
             </tr>
-        </tbody>
-    </table>
-    <p v-for="(x, obj) in bills">
-        {{x}} {{ obj.name }}
-    </p>
+            </tbody>
+        </table>
+    </div>
+
+    <div v-else>
+        <form action="" name="form" @submit.prevent="submit">
+            <label>Vencimento:</label>
+            <input type="text" v-model="bill.date_due"/>
+            <br><br>
+            <label>Nome:</label>
+            <select v-model="bill.name">
+                <!--<option v-for="obj in names" value="{{ obj }}">{{ obj }}</option> -->
+                <!--<option v-for="obj in names" v-bind:value="obj">{{ obj }}</option> -->
+                <option v-for="obj in names" :value="obj">{{ obj }}</option>
+            </select>
+            <br><br>
+            <label>Valor:</label>
+            <input type="text" v-model="bill.value" />
+            <br><br>
+            <input type="checkbox" v-model="bill.done">Pago</input>
+            <br><br>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
 
 
 <script type="text/javascript" src="node_modules/vue/dist/vue.min.js"></script>
