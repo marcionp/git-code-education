@@ -6,7 +6,7 @@
 </head>
 <body id="app">
     <h1>{{ title }}</h1>
-
+    <h3> {{ status }}</h3>
     <table border="1" cellpadding="10">
     <thead>
     <tr>
@@ -14,6 +14,7 @@
         <th>Vencimento</th>
         <th>Nome</th>
         <th>Valor</th>
+        <th>Paga?</th>
     </tr>
     </thead>
     <tbody>
@@ -22,6 +23,7 @@
             <td>{{ o.date_due}}</td>
             <td>{{ o.name }}</td>
             <td>{{ o.value }}</td>
+            <td> {{ o.done }}</td>
         </tr>
     </tbody>
     </table>
