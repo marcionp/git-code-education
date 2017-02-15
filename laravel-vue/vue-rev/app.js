@@ -7,6 +7,7 @@ var app = new Vue({
             {id: 1, name: "Cria conta"}
 
         ],
+        activedView: 0,
         bills: [
             {date_due: '01/01/2016', name: 'Luz', value: 100.50, done: 1},
             {date_due: '01/01/2016', name: 'Luz', value: 200.50, done: 0},
@@ -26,8 +27,8 @@ var app = new Vue({
         }
     },
     methods: {
-        ShowView: function ($event, num) {
-            alert(num);
+        ShowView: function ($event, id) {
+            this.activedView = id;
         },
     }
 })
