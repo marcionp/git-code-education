@@ -9,6 +9,17 @@ var app = new Vue({
 
         ],
         activedView: 1,
+        bill: {
+            date_due: '',
+            name: '',
+            value: 0
+        },
+        names: [
+            'Luz',
+            'Telefone',
+            'Cartão de crédito',
+            'Gasolina'
+        ],
         bills: [
             {date_due: '01/01/2016', name: 'Luz', value: 100.50, done: 1},
             {date_due: '01/01/2016', name: 'Luz', value: 200.50, done: 0},
@@ -31,6 +42,10 @@ var app = new Vue({
         ShowView: function ($event, id) {
             this.activedView = id;
         },
+        submit: function () {
+            this.bills.push(this.bill);
+            this.activedView = 0;
+        }
     }
 });
 
