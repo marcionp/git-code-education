@@ -1,13 +1,14 @@
 var app = new Vue({
     el: "#app",
     data: {
+        test: "",
         title: "Contas a pagar",
         menus: [
             {id: 0, name: "Listar contas"},
             {id: 1, name: "Cria conta"}
 
         ],
-        activedView: 0,
+        activedView: 1,
         bills: [
             {date_due: '01/01/2016', name: 'Luz', value: 100.50, done: 1},
             {date_due: '01/01/2016', name: 'Luz', value: 200.50, done: 0},
@@ -31,4 +32,8 @@ var app = new Vue({
             this.activedView = id;
         },
     }
+});
+
+app.$watch("test", function (novoValor,velhoValor) {
+    console.log("velhoValor: " + velhoValor + "- novoValor: " + novoValor);
 })
